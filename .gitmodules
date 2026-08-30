@@ -1,0 +1,9 @@
+[submodule "dp-one-machine"]
+	path = dp-one-machine
+	url = ../value-of-dynamic-price.git
+[submodule "dp-two-machines"]
+	path = dp-two-machines
+	url = ../dp-two-machines.git
+[submodule "price-and-schedule"]
+	path = price-and-schedule
+	url = ../joint-scheduling-and-pricing.git
