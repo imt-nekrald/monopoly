@@ -16,6 +16,7 @@ move evaluation-small.json export-general/evaluation-small.json
 move evaluation-medium.json export-general/evaluation-medium.json
 
 call "fully_dynamic.exe"
+python ../../organize-one-exact --directory-root "export-exact-one"
 call "dp-two-machines.exe"
-call python ../../dp-two-machines/organize.py --json-path results.json --export-dir export-two-exact
+call python ../../organize-two-exact.py --json-path results.json --export-dir export-two-exact
 move results.json export-two-exact/results.json
