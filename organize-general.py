@@ -27,7 +27,7 @@ def str_for_interval(lhs: float, rhs: float) -> str:
 
 
 class NameComponents:
-    GENETIC_TPL: str = '{}-genetic.json'
+    PARAMETERS_TPL: str = '{}-parameters.json'
     CONFIGURATION_TPL: str = '{}-configuration.json'
     EVALUATION_TPL: str = 'evaluation-{}.json'
     JSON_EXTENSION: str = ".json"
@@ -86,10 +86,6 @@ def build_profit_table(directory_root: str) -> pd.DataFrame:
 
     configuration: str
     for configuration in ConfigurationNames.OPTIONS:
-        genetic_json_path: str = os.path.join(
-            directory_root, NameComponents.GENETIC_TPL.format(configuration))
-        configuration_json_path: str = os.path.join(
-            directory_root, NameComponents.CONFIGURATION_TPL.format(configuration))
         evaluation_json_path: str = os.path.join(
             directory_root, NameComponents.EVALUATION_TPL.format(configuration))
         if os.path.isfile(evaluation_json_path):        
@@ -157,10 +153,6 @@ def build_time_table(directory_root: str) -> pd.DataFrame:
     build_dict[TimeTableColumns.GUROBI] = list()
     configuration: str
     for configuration in ConfigurationNames.OPTIONS:
-        genetic_json_path: str = os.path.join(
-            directory_root, NameComponents.GENETIC_TPL.format(configuration))
-        configuration_json_path: str = os.path.join(
-            directory_root, NameComponents.CONFIGURATION_TPL.format(configuration))
         evaluation_json_path: str = os.path.join(
             directory_root, NameComponents.EVALUATION_TPL.format(configuration))
         if os.path.isfile(evaluation_json_path):        
@@ -169,11 +161,16 @@ def build_time_table(directory_root: str) -> pd.DataFrame:
             with open(evaluation_json_path, "r") as in_json:
                 dict_evaluation = json.load(in_json)
                 build_dict[TimeTableColumns.SETTING].append(configuration.capitalize())
-                genetic_time: float = dict_evaluation[configuration][CallNames.GENETIC][TemporalFields.GENETIC_DURATION]
-                static_duration: float =  dict_evaluation[configuration][CallNames.GENETIC][PolicyNames.STATIC][TemporalFields.DURATION] + genetic_time
-                rollout_duration: float = dict_evaluation[configuration][CallNames.GENETIC][PolicyNames.ROLLOUT][TemporalFields.DURATION] + genetic_time
-                nested_duration: float = dict_evaluation[configuration][CallNames.GENETIC][PolicyNames.NESTED][TemporalFields.DURATION] + genetic_time
-                gurobi_duration: float = dict_evaluation[configuration][CallNames.GUROBI][PolicyNames.ESTIMATOR][TemporalFields.DURATION]
+                genetic_time: float = dict_evaluation[configuration][
+                    CallNames.GENETIC][TemporalFields.GENETIC_DURATION]
+                static_duration: float =  dict_evaluation[configuration][
+                    CallNames.GENETIC][PolicyNames.STATIC][TemporalFields.DURATION] + genetic_time
+                rollout_duration: float = dict_evaluation[configuration][
+                    CallNames.GENETIC][PolicyNames.ROLLOUT][TemporalFields.DURATION] + genetic_time
+                nested_duration: float = dict_evaluation[configuration][
+                    CallNames.GENETIC][PolicyNames.NESTED][TemporalFields.DURATION] + genetic_time
+                gurobi_duration: float = dict_evaluation[configuration][
+                    CallNames.GUROBI][PolicyNames.ESTIMATOR][TemporalFields.DURATION]
                 build_dict[TimeTableColumns.STATIC].append(static_duration)
                 build_dict[TimeTableColumns.ROLLOUT].append(rollout_duration)
                 build_dict[TimeTableColumns.NESTED].append(nested_duration)
@@ -193,13 +190,13 @@ class GapTableColumns:
     GAP_TYPE: str = 'Gap Type'
     GAP_VALUE: str = 'Gap Value'
 
+
 def form_str_gap(lhs_values: list[float], rhs_values: list[float]) -> str:
     gap_values: list[float] = list()
     lhs_item: float; rhs_item: float
     epsilon: float = 1e-5
     for lhs_item, rhs_item in zip(lhs_values, rhs_values):
         gap_values.append((rhs_item - lhs_item) / (abs(lhs_item) + epsilon))
-    
     assert len(lhs_values) == len(rhs_values)
     size: int = len(lhs_values)
     average: float = np.mean(gap_values)
@@ -214,10 +211,6 @@ def build_gap_table(directory_root: str) -> pd.DataFrame:
     build_dict[TimeTableColumns.GAP_VALUE] = list()
     configuration: str
     for configuration in ConfigurationNames.OPTIONS:
-        genetic_json_path: str = os.path.join(
-            directory_root, NameComponents.GENETIC_TPL.format(configuration))
-        configuration_json_path: str = os.path.join(
-            directory_root, NameComponents.CONFIGURATION_TPL.format(configuration))
         evaluation_json_path: str = os.path.join(
             directory_root, NameComponents.EVALUATION_TPL.format(configuration))
         if os.path.isfile(evaluation_json_path):        
@@ -235,23 +228,33 @@ def build_gap_table(directory_root: str) -> pd.DataFrame:
                     PolicyNames.ESTIMATOR][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.PROFIT)]
                 gurobi_bound_observations: list[float] = dict_evaluation[configuration][CallNames.GUROBI][
                     PolicyNames.ESTIMATOR][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.BOUND)]
-
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.STATIC_ROLLOUT_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(static_observations, rollout_observations))
-    
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.ROLLOUT_NESTED_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(rollout_observations, nested_observations))
-
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.NESTED_BOUND_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(nested_observations, gurobi_bound_observations))
- 
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.GUROBI_MIP_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(mip_gurobi_observations, gurobi_bound_observations))
     return pd.DataFrame.from_dict(build_dict)
+
+
+def build_parameter_table(directory_root: str) -> pd.DataFrame:
+    raise NotImplementedError("Needs implementation.")
+
+
+def build_setting_table(directory_root: str, setting_name: str) -> pd.DataFrame:
+    configuration_json_path: str = os.path.join(
+        directory_root, NameComponents.CONFIGURATION_TPL.format(setting_name))
+    in_json: TextIO
+    with open(configuration_json_path, "r") as in_json:
+        dict_configuration = json.load(in_json)
+
+    raise NotImplementedError("Needs implementation.")
 
 
 if __name__ == '__main__':
@@ -261,3 +264,4 @@ if __name__ == '__main__':
     time_df: pd.DataFrame = build_time_table(directory_path)
     gap_df: pd.DataFrame = build_gap_table(directory_path)
     
+
