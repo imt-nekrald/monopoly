@@ -51,6 +51,7 @@ if [ ! -f export-general/evaluation-medium.json ]; then
     mv *.log logs/
     mv logs export-general/logs-medium
 fi
+python ../../organize-general.py --directory-root export-general
 
 
 if [ ! -d export-exact-one ]; then

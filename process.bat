@@ -21,6 +21,7 @@ if not exist export-general\evaluation-medium.json (
     move *.log logs\
     move logs export-general\logs-medium
 )
+call python ..\..\organize-general --directory-root export-general 
 
 if not exist export-exact-one\ (
     call fully_dynamic.exe
