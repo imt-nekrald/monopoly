@@ -5,6 +5,21 @@ def str_for_interval(lhs: float, rhs: float) -> str:
     return f"[{lhs :.2f}, {rhs :.2f}]"
 
 
+def float_list_to_str(input_list: list[float]) -> str:
+    components: list[str] = list()
+    element: float
+    for element in input_list:
+        components.append(f"{element :.2f}")
+    return ", ".join(components)
+
+def int_list_to_str(input_list: list[int]) -> str:
+    components: list[str] = list()
+    element: int
+    for element in input_list:
+        components.append(str(element))
+    return ", ".join(components)
+
+
 class NameComponents:
     PARAMETERS_TPL: str = '{}-parameters.json'
     CONFIGURATION_TPL: str = '{}-configuration.json'
