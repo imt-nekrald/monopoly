@@ -49,5 +49,5 @@ def build_setting_table(directory_root: str) -> pd.DataFrame:
                 build_dict[configuration.capitalize()] = [ 
                     str(n_machines), str(n_order_types), 
                     str(n_periods), float_list_to_str(period_durations) ]
-    return pd.DataFrame.from_dict(build-dict)
+    return pd.DataFrame.from_dict(build_dict)
                 

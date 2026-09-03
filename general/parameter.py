@@ -26,9 +26,6 @@ class ParameterInputFields:
 
 class ParameterTableColumnNames:
     PARAMETER: str = 'Parameter'
-    MINIMAL: str = ConfigurationNames.MINIMAL.capitalize()
-    SMALL: str = ConfigurationNames.SMALL.capitalize()
-    MEDIUM: str = ConfigurationNames.MEDIUM.capitalize()
 
 
 class ParameterTableRowNames:
@@ -45,10 +42,6 @@ class ParameterTableRowNames:
 
 def build_parameter_table(directory_root: str) -> pd.DataFrame:
     build_dict: dict[str, list[str]] = OrderedDict()
-    build_dict[ParameterTableColumnNames.PARAMETER] = list()
-    build_dict[ParameterTableColumnNames.MINIMAL] = list()
-    build_dict[ParameterTableColumnNames.SMALL] = list()
-    build_dict[ParameterTableColumnNames.MEDIUM] = list()
     build_dict[ParameterTableColumnNames.PARAMETER] = [
         ParameterTableRowNames.ROW_EVALUATION_SIZE,
         ParameterTableRowNames.ROW_ROLLOUT_SIZE,
@@ -85,3 +78,4 @@ def build_parameter_table(directory_root: str) -> pd.DataFrame:
                     f"{recombination_proba :.2f}", str(selection_size), str(estimator_tl)
                 ]
     return pd.DataFrame.from_dict(build_dict)
+
