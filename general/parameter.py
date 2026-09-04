@@ -14,6 +14,7 @@ from general.common import NameComponents
 class ParameterInputFields:
     N_EVALUATION_SAMPLES: str = "n-evaluation-samples"
     N_ROLLOUT_TRAJECTORIES: str = "n-rollout-trajectories"
+    N_NESTED_TRAJECTORIES: str = "n-nested-trajectories"
     GENETIC: str = "genetic"
     N_GENETIC_ITERATIONS: str = "n-genetic-iterations"
     N_EVALUATION_TRAJECTORIES: str = "n-evaluation-trajectories"
@@ -31,6 +32,7 @@ class ParameterTableColumnNames:
 class ParameterTableRowNames:
     ROW_EVALUATION_SIZE: str = "Number of trajectories at evaluation"
     ROW_ROLLOUT_SIZE: str = "Number of trajectories for rollout estimation"
+    ROW_NESTED_SIZE: str = "Number of trajectories for nested estimation"
     ROW_N_GENETIC_ITERATIONS: str = "Number of genetic iterations"
     ROW_N_EVALUATION_TRAJECTORIES: str = "Number of trajectories for final genetic estimation"
     ROW_N_FAST_TRAJECTORIES: str = "Number of trajectories for intermediate genetic estimation"
@@ -45,6 +47,7 @@ def build_parameter_table(directory_root: str) -> pd.DataFrame:
     build_dict[ParameterTableColumnNames.PARAMETER] = [
         ParameterTableRowNames.ROW_EVALUATION_SIZE,
         ParameterTableRowNames.ROW_ROLLOUT_SIZE,
+        ParameterTableRowNames.ROW_NESTED_SIZE,
         ParameterTableRowNames.ROW_N_GENETIC_ITERATIONS,
         ParameterTableRowNames.ROW_N_EVALUATION_TRAJECTORIES,
         ParameterTableRowNames.ROW_N_FAST_TRAJECTORIES,
@@ -64,6 +67,7 @@ def build_parameter_table(directory_root: str) -> pd.DataFrame:
                 dict_parameters = json.load(in_json)
                 evaluation_size: int = dict_parameters[ParameterInputFields.N_EVALUATION_SAMPLES]
                 rollout_size: int = dict_parameters[ParameterInputFields.N_ROLLOUT_TRAJECTORIES]
+                nested_size: int = dict_parameters[ParameterInputFields.N_NESTED_TRAJECTORIES]
                 genetic_parameters: dict[str, Any] = dict_parameters[ParameterInputFields.GENETIC]
                 genetic_iterations: int = genetic_parameters[ParameterInputFields.N_GENETIC_ITERATIONS]
                 genetic_eval_size: int = genetic_parameters[ParameterInputFields.N_EVALUATION_TRAJECTORIES]
@@ -73,7 +77,7 @@ def build_parameter_table(directory_root: str) -> pd.DataFrame:
                 selection_size: int = genetic_parameters[ParameterInputFields.SELECTION_SIZE]
                 estimator_tl: int = dict_parameters[ParameterInputFields.ESTIMATOR_TIME_LIMIT]
                 build_dict[configuration.capitalize()] = [
-                    str(evaluation_size), str(rollout_size), str(genetic_iterations), 
+                    str(evaluation_size), str(rollout_size), str(nested_size), str(genetic_iterations), 
                     str(genetic_eval_size), str(genetic_fast_size), str(mutation_places), 
                     f"{recombination_proba :.2f}", str(selection_size), str(estimator_tl)
                 ]
