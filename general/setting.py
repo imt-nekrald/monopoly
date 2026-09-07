@@ -51,3 +51,4 @@ def build_setting_table(directory_root: str) -> pd.DataFrame:
                     str(n_periods), float_list_to_str(period_durations) ]
     return pd.DataFrame.from_dict(build_dict)
                 
+

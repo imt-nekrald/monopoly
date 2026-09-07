@@ -18,8 +18,7 @@ from general.common import ConceptFields
 
 class GapTableRows:
     STATIC_ROLLOUT_GAP: str = 'Static-Rollout Gap'
-    ROLLOUT_NESTED_GAP: str = 'Rollout-Nested Gap'
-    NESTED_BOUND_GAP: str = 'Nested-Gurobi Bound Gap'
+    ROLLOUT_BOUND_GAP: str = 'Rollout-Gurobi Bound Gap'
     GUROBI_MIP_GAP: str = 'Gurobi MIP-Bound Gap'
 
 
@@ -62,8 +61,6 @@ def build_gap_table(directory_root: str) -> pd.DataFrame:
                     PolicyNames.STATIC][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.PROFIT)]
                 rollout_observations: list[float] = dict_evaluation[configuration][CallNames.GENETIC][
                     PolicyNames.ROLLOUT][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.PROFIT)]
-                nested_observations: list[float] = dict_evaluation[configuration][CallNames.GENETIC][
-                    PolicyNames.NESTED][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.PROFIT)]
                 mip_gurobi_observations: list[float] = dict_evaluation[configuration][CallNames.GUROBI][
                     PolicyNames.ESTIMATOR][EstimatorFields.OBSERVATIONS_TPL.format(ConceptFields.PROFIT)]
                 gurobi_bound_observations: list[float] = dict_evaluation[configuration][CallNames.GUROBI][
@@ -71,15 +68,13 @@ def build_gap_table(directory_root: str) -> pd.DataFrame:
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.STATIC_ROLLOUT_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(static_observations, rollout_observations))
+
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
-                build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.ROLLOUT_NESTED_GAP)
-                build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(rollout_observations, nested_observations))
-                build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
-                build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.NESTED_BOUND_GAP)
-                build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(nested_observations, gurobi_bound_observations))
+                build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.ROLLOUT_BOUND_GAP)
+                build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(rollout_observations, gurobi_bound_observations))
+
                 build_dict[GapTableColumns.SETTING].append(configuration.capitalize())
                 build_dict[GapTableColumns.GAP_TYPE].append(GapTableRows.GUROBI_MIP_GAP)
                 build_dict[GapTableColumns.GAP_VALUE].append(form_str_gap(mip_gurobi_observations, gurobi_bound_observations))
     return pd.DataFrame.from_dict(build_dict)
-
 

@@ -7,17 +7,17 @@ cd x64
 cd Release
 
 if not exist export-general\evaluation-minimal.json (
-    call schedule_and_price.exe --instances minimal --approaches static rollout nested estimator --calls genetic gurobi  --report export-general\evaluation-minimal.json
+    call schedule_and_price.exe --instances minimal --approaches static rollout estimator --calls genetic gurobi  --report export-general\evaluation-minimal.json
     move *.log logs\
     move logs export-general\logs-minimal
 )
 if not exist export-general\evaluation-small.json (
-    call schedule_and_price.exe --instances small --approaches static rollout nested estimator --calls genetic gurobi  --report export-general\evaluation-small.json
+    call schedule_and_price.exe --instances small --approaches static rollout estimator --calls genetic gurobi  --report export-general\evaluation-small.json
     move *.log logs\
     move logs export-general\logs-small
 )
 if not exist export-general\evaluation-medium.json (
-    call schedule_and_price.exe --instances medium --approaches static rollout nested estimator --calls genetic gurobi  --report export-general\evaluation-medium.json
+    call schedule_and_price.exe --instances medium --approaches static rollout estimator --calls genetic gurobi  --report export-general\evaluation-medium.json
     move *.log logs\
     move logs export-general\logs-medium
 )

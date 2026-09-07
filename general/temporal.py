@@ -20,7 +20,6 @@ class TimeTableColumns:
     SETTING: str = 'Setting'
     STATIC: str = 'Static'
     ROLLOUT: str = 'Rollout'
-    NESTED: str = 'Nested'
     GUROBI: str = 'Gurobi'
  
 
@@ -29,7 +28,6 @@ def build_time_table(directory_root: str) -> pd.DataFrame:
     build_dict[TimeTableColumns.SETTING] = list()
     build_dict[TimeTableColumns.STATIC] = list()
     build_dict[TimeTableColumns.ROLLOUT] = list()
-    build_dict[TimeTableColumns.NESTED] = list()
     build_dict[TimeTableColumns.GUROBI] = list()
     configuration: str
     for configuration in ConfigurationNames.OPTIONS:
@@ -47,13 +45,10 @@ def build_time_table(directory_root: str) -> pd.DataFrame:
                     CallNames.GENETIC][PolicyNames.STATIC][TemporalFields.DURATION] + genetic_time
                 rollout_duration: float = dict_evaluation[configuration][
                     CallNames.GENETIC][PolicyNames.ROLLOUT][TemporalFields.DURATION] + genetic_time
-                nested_duration: float = dict_evaluation[configuration][
-                    CallNames.GENETIC][PolicyNames.NESTED][TemporalFields.DURATION] + genetic_time
                 gurobi_duration: float = dict_evaluation[configuration][
                     CallNames.GUROBI][PolicyNames.ESTIMATOR][TemporalFields.DURATION]
                 build_dict[TimeTableColumns.STATIC].append(static_duration)
                 build_dict[TimeTableColumns.ROLLOUT].append(rollout_duration)
-                build_dict[TimeTableColumns.NESTED].append(nested_duration)
                 build_dict[TimeTableColumns.GUROBI].append(gurobi_duration)
     return pd.DataFrame.from_dict(build_dict)
 

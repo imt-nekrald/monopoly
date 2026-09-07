@@ -28,7 +28,6 @@ class OrderInputFields:
     INPUT_PROBABILITIES: str = 'period-order-probability'
 
 
-
 class OrderTableRows:
     ROW_ORDER_SIZE: str = 'Order size'
     ROW_RELEASE_TERM: str = 'Due term'
@@ -95,5 +94,5 @@ def build_order_table(directory_root: str) -> pd.DataFrame:
                     build_dict[order_name] = order_column
 
     return pd.DataFrame.from_dict(build_dict)
-                    
+
 

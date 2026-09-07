@@ -19,7 +19,6 @@ class ProfitTableColumns:
     SETTING: str = 'Setting'
     STATIC: str = 'Static'
     ROLLOUT: str = 'Rollout'
-    NESTED: str = 'Nested'
     MIP_GUROBI: str = 'MIP Gurobi PI'
     UB_GUROBI: str = 'UB Gurobi PI'
 
@@ -29,7 +28,6 @@ def build_profit_table(directory_root: str) -> pd.DataFrame:
     build_dict[ProfitTableColumns.SETTING] = list()
     build_dict[ProfitTableColumns.STATIC] = list()
     build_dict[ProfitTableColumns.ROLLOUT] = list()
-    build_dict[ProfitTableColumns.NESTED] = list()
     build_dict[ProfitTableColumns.MIP_GUROBI] = list()
     build_dict[ProfitTableColumns.UB_GUROBI] = list()
 
@@ -56,13 +54,6 @@ def build_profit_table(directory_root: str) -> pd.DataFrame:
                     PolicyNames.ROLLOUT][EstimatorFields.UPPER_TPL.format(ConceptFields.PROFIT)]
                 build_dict[ProfitTableColumns.ROLLOUT].append(
                     str_for_interval(lhs_rollout, rhs_rollout))
-
-                lhs_nested: float = dict_evaluation[configuration][CallNames.GENETIC][
-                    PolicyNames.NESTED][EstimatorFields.LOWER_TPL.format(ConceptFields.PROFIT)]
-                rhs_nested: float = dict_evaluation[configuration][CallNames.GENETIC][
-                    PolicyNames.NESTED][EstimatorFields.UPPER_TPL.format(ConceptFields.PROFIT)]
-                build_dict[ProfitTableColumns.NESTED].append(
-                    str_for_interval(lhs_nested, rhs_nested))
 
                 lhs_mip_gurobi: float =  dict_evaluation[configuration][CallNames.GUROBI][
                     PolicyNames.ESTIMATOR][EstimatorFields.LOWER_TPL.format(ConceptFields.PROFIT)]

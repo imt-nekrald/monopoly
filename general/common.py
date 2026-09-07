@@ -12,6 +12,7 @@ def float_list_to_str(input_list: list[float]) -> str:
         components.append(f"{element :.2f}")
     return ", ".join(components)
 
+
 def int_list_to_str(input_list: list[int]) -> str:
     components: list[str] = list()
     element: int
@@ -43,7 +44,6 @@ class CallNames:
 class PolicyNames:
     STATIC: str = 'static'
     ROLLOUT: str = 'rollout'
-    NESTED: str = 'nested'
     ESTIMATOR: str = 'estimator'
 
 
@@ -51,7 +51,7 @@ class EstimatorFields:
     AVERAGE_TPL: str = 'average-{}'
     LOWER_TPL: str = 'lower-{}'
     UPPER_TPL: str = 'upper-{}'
-    OBSERVATIONS_TPL: str = 'observations-'
+    OBSERVATIONS_TPL: str = 'observations-{}'
 
 
 class ConceptFields:
