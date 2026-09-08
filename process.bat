@@ -32,7 +32,9 @@ if not exist export-exact-two\ (
     call dp-two-machines.exe
     call python ..\..\organize-two-exact.py --json-path results.json --export-dir export-exact-two
     move results.json export-exact-two\results.json
+    move configuration.json export-exact-two\configuration.json
 )
 
 cd ..\..
 echo "Results are available in x64\Release"
+

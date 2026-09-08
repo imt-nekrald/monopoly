@@ -66,6 +66,7 @@ if [ ! -d export-exact-two ]; then
     dp_two_machines
     python ../../organize-two-exact.py --json-path results.json --export-dir export-exact-two
     mv results.json export-exact-two/results.json
+    mv configuration.json export-exact-two/configuration.json
 fi
 
 
