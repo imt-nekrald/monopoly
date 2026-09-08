@@ -83,7 +83,7 @@ def build_order_table(directory_root: str) -> pd.DataFrame:
                     decline_penalty: float = order_dict[OrderInputFields.INPUT_DECLINE_PENALTY]
                     sensitivity: float = order_dict[OrderInputFields.INPUT_LINEAR_SENSITIVITY]
                     prices: list[float] = dict_setting[OrderInputFields.INPUT_PRICE_RANGES][0][idx]
-                    probability: float= dict_setting[OrderInputFields.INPUT_PRICE_RANGES][0][idx]
+                    probability: float= dict_setting[OrderInputFields.INPUT_PROBABILITIES][0][idx]
                     order_column: list[str] = [
                         str(order_size), f"{release_term :.2f}", f"{due_term :.2f}",
                         int_list_to_str(compatible_machines), float_list_to_str(processing), 

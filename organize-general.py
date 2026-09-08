@@ -30,16 +30,6 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_setting_table(directory_root: str) -> pd.DataFrame:
-    configuration_json_path: str = os.path.join(
-        directory_root, NameComponents.CONFIGURATION_TPL.format(setting_name))
-    in_json: TextIO
-    with open(configuration_json_path, "r") as in_json:
-        dict_configuration = json.load(in_json)
-
-    raise NotImplementedError("Needs implementation.")
-
-
 class ExportNames:
     PROFIT_TEX: str = "profits.tex"
     PROFIT_XLSX: str = "profits.xlsx"
@@ -78,6 +68,5 @@ if __name__ == '__main__':
     parameter_df.to_excel(os.path.join(directory_path, ExportNames.PARAMETER_XLSX), index=False)
     order_df.to_excel(os.path.join(directory_path, ExportNames.ORDER_XLSX), index=False)
     setting_df.to_excel(os.path.join(directory_path, ExportNames.SETTING_XLSX), index=False)
-
 
     

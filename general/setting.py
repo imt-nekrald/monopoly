@@ -14,14 +14,14 @@ class InputSettingFields:
     INPUT_N_MACHINES: str = "n-machines"
     INPUT_N_ORDER_TYPES: str = "n-order-types"
     INPUT_N_PERIODS: str = "n-periods"
-    INPUT_PERIOD_DURATIONS: str = "period-duration"
+    INPUT_PERIOD_DURATIONS: str = "period-durations"
 
 
 class SettingTableRows:
     ROW_N_MACHINES: str = "Number of machines"
     ROW_N_ORDER_TYPES: str = "Number of order types"
     ROW_N_PERIODS: str = "Number of periods"
-    ROW_PERIOD_DURATONS: str = "Period Durations"
+    ROW_PERIOD_DURATIONS: str = "Period Durations"
 
 
 class SettingTableColumns:
