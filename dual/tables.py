@@ -59,8 +59,8 @@ def form_job_proba_table(list_data: list[list[float]]) -> pd.DataFrame:
     simple_column: list[str] = list()
     complex_column: list[str] = list()
 
-    idx_simple: int = JobNames.IDX_2_NAME[JobNames.SIMPLE]
-    idx_complex: int = JobNames.IDX_2_NAME[JobNames.COMPLEX]
+    idx_simple: int = JobNames.NAME_2_IDX[JobNames.SIMPLE]
+    idx_complex: int = JobNames.NAME_2_IDX[JobNames.COMPLEX]
     for idx_period in range(len(list_data)):
         period_column.append(idx_period + 1)
         simple_column.append(f"{list_data[idx_period][idx_simple] :.2f}")
@@ -78,16 +78,16 @@ def form_tier_proba_table(list_data: list[list[float]]) -> pd.DataFrame:
     regular_column: list[str] = list()
     wealthy_column: list[str] = list()
 
-    idx_regular: int = CustomerNames.IDX_2_NAME[CustomerNames.REGULAR]
-    idx_wealthy: int = CustomerNames.IDX_2_NAME[CustomerNames.WEALTHY]
+    idx_regular: int = CustomerNames.NAME_2_IDX[CustomerNames.REGULAR]
+    idx_wealthy: int = CustomerNames.NAME_2_IDX[CustomerNames.WEALTHY]
     for idx_period in range(len(list_data)):
         period_column.append(idx_period + 1)
         regular_column.append(f"{list_data[idx_period][idx_regular] :.2f}")
         wealthy_column.append(f"{list_data[idx_period][idx_wealthy] :.2f}")
 
     table_dict[TableFields.COLUMN_PERIOD] = period_column
-    table_dict[JobNames.REGULAR.capitalize()] = regular_column
-    table_dict[JobNames.WEALTHY.capitalize()] = wealthy_column
+    table_dict[CustomerNames.REGULAR.capitalize()] = regular_column
+    table_dict[CustomerNames.WEALTHY.capitalize()] = wealthy_column
     return pd.DataFrame.from_dict(table_dict)
 
 
@@ -148,7 +148,7 @@ def form_main_table(json_data: dict[str, any]) -> pd.DataFrame:
     release_durations: list[int] = json_data[ConfigurationKeys.RELEASE_DURATIONS]
     simple_column.append(str(release_durations[JobNames.NAME_2_IDX[JobNames.SIMPLE]]))
     complex_column.append(str(release_durations[JobNames.NAME_2_IDX[JobNames.COMPLEX]]))
-    parameter_column.append(TalbeFields.FIELD_DUE_DURATIONS)
+    parameter_column.append(TableFields.FIELD_DUE_DURATIONS)
     due_durations: list[int] = json_data[ConfigurationKeys.DUE_DURATIONS]
     simple_column.append(str(due_durations[JobNames.NAME_2_IDX[JobNames.SIMPLE]]))
     complex_column.append(str(due_durations[JobNames.NAME_2_IDX[JobNames.COMPLEX]]))

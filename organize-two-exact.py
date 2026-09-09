@@ -59,7 +59,7 @@ if __name__ == '__main__':
         os.path.join(args.export_dir, TableNames.PROBA_JOB_TYPE_CONFIG_EXCEL) ,
         float_format="%.2f", header=True, index=False)
     configuration_frames.tier_proba_table.to_excel(
-        os.path.join(args.export_dir, TableNames.TIER_JOB_TYPE_CONFIG_EXCEL) ,
+        os.path.join(args.export_dir, TableNames.PROBA_TIER_TYPE_CONFIG_EXCEL) ,
         float_format="%.2f", header=True, index=False)
 
     configuration_frames.common_table.to_latex(
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         os.path.join(args.export_dir, TableNames.PROBA_JOB_TYPE_CONFIG_LATEX) ,
         float_format="%.2f", header=True, index=False)
     configuration_frames.tier_proba_table.to_latex(
-        os.path.join(args.export_dir, TableNames.TIER_JOB_TYPE_CONFIG_LATEX) ,
+        os.path.join(args.export_dir, TableNames.PROBA_TIER_TYPE_CONFIG_LATEX) ,
         float_format="%.2f", header=True, index=False)
 
 
