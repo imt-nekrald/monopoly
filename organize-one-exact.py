@@ -26,7 +26,7 @@ def walk_and_convert(export_root: str) -> None:
                 excel_path: str = os.path.join(root, name)
                 latex_path: str = os.path.join(root, name[:-5] + ".tex")
                 df: pd.DataFrame = pd.read_excel(excel_path)
-                df.to_latex(latex_path, index=False)
+                df.to_latex(latex_path, index=False, float_format="%.3f")
 
 
 if __name__ == '__main__':
