@@ -33,15 +33,22 @@ def form_result_table(json_path: str) -> pd.DataFrame:
     static_column: list[float] = list()
     constant_column: list[float] = list()
 
+    MIN_HORIZON_LENGTH: int = 3
+    entry: dict[str, any]
     for entry in data:
-        lenth_column.append(entry["horizon-length"])
-        dynamic_column.append(entry["dynamic-revenue"])
+        horizon_length: int = int(entry["horizon-length"])
+        if horizon_length < MIN_HORIZON_LENGTH:
+            continue
+        lenth_column.append(str(horizon_length))
+        dynamic_revenue: float = float(entry["dynamic-revenue"])
+        dynamic_column.append(f"{dynamic_revenue:.1f}")
         if "static-revenue" in entry:
             static_revenue: float = float(entry["static-revenue"])
-            static_column.append(f"{static_revenue :.2f}")
+            static_column.append(f"{static_revenue:.1f}")
         else:
             static_column.append("N.A.")
-        constant_column.append(entry["constant-revenue"])
+        constant_revenue: float = float(entry["constant-revenue"])
+        constant_column.append(constant_revenue)
 
     table: pd.DataFrame = pd.DataFrame.from_dict(
         OrderedDict({
@@ -63,8 +70,8 @@ def form_job_proba_table(list_data: list[list[float]]) -> pd.DataFrame:
     idx_complex: int = JobNames.NAME_2_IDX[JobNames.COMPLEX]
     for idx_period in range(len(list_data)):
         period_column.append(idx_period + 1)
-        simple_column.append(f"{list_data[idx_period][idx_simple] :.2f}")
-        complex_column.append(f"{list_data[idx_period][idx_complex] :.2f}")
+        simple_column.append(f"{list_data[idx_period][idx_simple] :.1f}")
+        complex_column.append(f"{list_data[idx_period][idx_complex] :.1f}")
 
     table_dict[TableFields.COLUMN_PERIOD] = period_column
     table_dict[JobNames.SIMPLE.capitalize()] = simple_column
@@ -82,8 +89,8 @@ def form_tier_proba_table(list_data: list[list[float]]) -> pd.DataFrame:
     idx_wealthy: int = CustomerNames.NAME_2_IDX[CustomerNames.WEALTHY]
     for idx_period in range(len(list_data)):
         period_column.append(idx_period + 1)
-        regular_column.append(f"{list_data[idx_period][idx_regular] :.2f}")
-        wealthy_column.append(f"{list_data[idx_period][idx_wealthy] :.2f}")
+        regular_column.append(f"{list_data[idx_period][idx_regular] :.1f}")
+        wealthy_column.append(f"{list_data[idx_period][idx_wealthy] :.1f}")
 
     table_dict[TableFields.COLUMN_PERIOD] = period_column
     table_dict[CustomerNames.REGULAR.capitalize()] = regular_column
@@ -121,28 +128,28 @@ def form_main_table(json_data: dict[str, any]) -> pd.DataFrame:
         ConfigurationKeys.JOB_DURATIONS][JobNames.NAME_2_IDX[JobNames.SIMPLE]]
     simple_fast_duration: int = simple_durations[MachineNames.NAME_2_IDX[MachineNames.FAST]]
     simple_std_duration: int = simple_durations[MachineNames.NAME_2_IDX[MachineNames.FAST]]
-    simple_column.append(f"{MachineNames.FAST}: {simple_fast_duration}," 
-                         + f"{MachineNames.STANDARD}: {simple_std_duration} ")
+    simple_column.append(f"{MachineNames.FAST} : {simple_fast_duration}, " 
+                         + f"{MachineNames.STANDARD} : {simple_std_duration} ")
     complex_durations: list[int] = json_data[ConfigurationKeys.JOB_DURATIONS
                                              ][JobNames.NAME_2_IDX[JobNames.COMPLEX]]
     complex_fast_duration: int = complex_durations[MachineNames.NAME_2_IDX[MachineNames.FAST]]
     complex_std_duration: int = complex_durations[MachineNames.NAME_2_IDX[MachineNames.FAST]]
-    complex_column.append(f"{MachineNames.FAST}: {complex_fast_duration}," 
-                          + f"{MachineNames.STANDARD}: {complex_std_duration} ")
+    complex_column.append(f"{MachineNames.FAST} : {complex_fast_duration}, "  
+                          + f"{MachineNames.STANDARD} : {complex_std_duration} ")
     
     parameter_column.append(TableFields.FIELD_DELIVERY_DURATIONS)
     simple_delivery: list[int] = json_data[
         ConfigurationKeys.DELIVERY_DURATIONS][JobNames.NAME_2_IDX[JobNames.SIMPLE]]
     simple_fast_delivery: int = simple_delivery[MachineNames.NAME_2_IDX[MachineNames.FAST]]
     simple_std_delivery: int = simple_delivery[MachineNames.NAME_2_IDX[MachineNames.FAST]]
-    simple_column.append(f"{MachineNames.FAST}: {simple_fast_delivery}," 
-                         + f"{MachineNames.STANDARD}: {simple_std_delivery} ")
+    simple_column.append(f"{MachineNames.FAST} : {simple_fast_delivery}, " 
+                         + f"{MachineNames.STANDARD} : {simple_std_delivery} ")
     complex_delivery: list[int] = json_data[ConfigurationKeys.DELIVERY_DURATIONS
                                              ][JobNames.NAME_2_IDX[JobNames.COMPLEX]]
     complex_fast_delivery: int = complex_delivery[MachineNames.NAME_2_IDX[MachineNames.FAST]]
     complex_std_delivery: int = complex_delivery[MachineNames.NAME_2_IDX[MachineNames.FAST]]
-    complex_column.append(f"{MachineNames.FAST}: {complex_fast_delivery}," 
-                          + f"{MachineNames.STANDARD}: {complex_std_delivery} ")
+    complex_column.append(f"{MachineNames.FAST} : {complex_fast_delivery}, "  
+                          + f"{MachineNames.STANDARD} : {complex_std_delivery} ")
     
     parameter_column.append(TableFields.FIELD_RELEASE_DURATIONS)
     release_durations: list[int] = json_data[ConfigurationKeys.RELEASE_DURATIONS]
@@ -158,25 +165,25 @@ def form_main_table(json_data: dict[str, any]) -> pd.DataFrame:
                                       ][JobNames.NAME_2_IDX[JobNames.SIMPLE]]
     simple_regular_wtp: float = simple_wtp[CustomerNames.NAME_2_IDX[CustomerNames.REGULAR]]
     simple_wealthy_wtp: float = simple_wtp[CustomerNames.NAME_2_IDX[CustomerNames.WEALTHY]]
-    simple_column.append(f"{CustomerNames.REGULAR}: {simple_regular_wtp :.2f}," 
-                         + f"{CustomerNames.WEALTHY}: {simple_wealthy_wtp :.2f} ")
+    simple_column.append(f"{CustomerNames.REGULAR}: {simple_regular_wtp :.1f}, " 
+                         + f"{CustomerNames.WEALTHY}: {simple_wealthy_wtp :.1f} ")
     complex_wtp: list[float] = json_data[ConfigurationKeys.WILLINGNESS_TO_PAY
                                        ][JobNames.NAME_2_IDX[JobNames.COMPLEX]]
     complex_regular_wtp: float = complex_wtp[CustomerNames.NAME_2_IDX[CustomerNames.REGULAR]]
     complex_wealthy_wtp: float = complex_wtp[CustomerNames.NAME_2_IDX[CustomerNames.WEALTHY]]
-    complex_column.append(f"{CustomerNames.REGULAR}: {complex_regular_wtp :.2f}," 
-                         + f"{CustomerNames.WEALTHY}: {complex_wealthy_wtp :.2f} ")
+    complex_column.append(f"{CustomerNames.REGULAR}: {complex_regular_wtp :.1f}, " 
+                         + f"{CustomerNames.WEALTHY}: {complex_wealthy_wtp :.1f} ")
 
 
     parameter_column.append(TableFields.FIELD_DUE_PENALTY)
     tardiness_fees: list[float] = json_data[ConfigurationKeys.DUE_PENALTIES]
-    simple_column.append(f"{tardiness_fees[JobNames.NAME_2_IDX[JobNames.SIMPLE]] :.2f}")
-    complex_column.append(f"{tardiness_fees[JobNames.NAME_2_IDX[JobNames.COMPLEX]] :.2f}")
+    simple_column.append(f"{tardiness_fees[JobNames.NAME_2_IDX[JobNames.SIMPLE]] :.1f}")
+    complex_column.append(f"{tardiness_fees[JobNames.NAME_2_IDX[JobNames.COMPLEX]] :.1f}")
 
     parameter_column.append(TableFields.FIELD_DECLINE_COST)
     decline_penalty: list[float] = json_data[ConfigurationKeys.DECLINE_COSTS]
-    simple_column.append(f"{decline_penalty[JobNames.NAME_2_IDX[JobNames.SIMPLE]] :.2f}")
-    complex_column.append(f"{decline_penalty[JobNames.NAME_2_IDX[JobNames.COMPLEX]] :.2f}")
+    simple_column.append(f"{decline_penalty[JobNames.NAME_2_IDX[JobNames.SIMPLE]] :.1f}")
+    complex_column.append(f"{decline_penalty[JobNames.NAME_2_IDX[JobNames.COMPLEX]] :.1f}")
  
  
     building_dict[TableFields.COLUMN_PARAMETER] = parameter_column
