@@ -30,7 +30,7 @@ if not exist export-exact-one\ (
 
 if not exist export-exact-two\ (
     call dp-two-machines.exe
-    call python ..\..\organize-two-exact.py --json-path results.json --export-dir export-exact-two
+    call python ..\..\organize-two-exact.py --result-json-path results.json --configuration-json-path configuration.json --export-dir export-exact-two
     move results.json export-exact-two\results.json
     move configuration.json export-exact-two\configuration.json
 )
